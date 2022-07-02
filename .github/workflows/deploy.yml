@@ -33,7 +33,7 @@ jobs:
         run: poetry install
 
       - name: 🔬 Lint
-        run: poetry run black --check
+        run: poetry run black --check .
 
   test:
     name: ⚡ Pytest
