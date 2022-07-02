@@ -35,9 +35,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'allauth.socialaccount',
+    'allauth.socialaccount.providers.twitter',
     # 'allauth.socialaccount.providers.facebook',
-    # 'allauth.socialaccount.providers.twitter',
     # code
     'users'
 
