@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "kplc_be"
+version = "0.1.0"
+description = "Backend app to manage the KPLC outages app."
+authors = ["Allan Ibutiti <25291950+ibutiti@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.0.5"
+djangorestframework = "^3.13.1"
+django-filter = "^22.1"
+django-cors-headers = "^3.13.0"
+dj-rest-auth = {extras = ["with_social"], version = "^2.2.4"}
+django-environ = "^0.9.0"
+psycopg2 = "^2.9.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
