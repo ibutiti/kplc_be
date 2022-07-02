@@ -14,7 +14,11 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # False if not in os.environ because of casting above
 DEBUG = env("DEBUG")
-SECRET_KEY = env("SECRET_KEY")
+
+if DEBUG is True:
+    SECRET_KEY = "SECRET_KEY"
+else:
+    SECRET_KEY = env("SECRET_KEY")
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
@@ -85,7 +89,8 @@ WSGI_APPLICATION = "kplc_outages.wsgi.application"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db(),
+    "default": env.db(
+        default='postgres://postgres:postgres@localhost:5432')
 }
 
 # Password validation
