@@ -57,6 +57,9 @@ jobs:
       - name: 📥 Intall deps deps
         run: poetry install
 
+      - name: 🏞 Set testing env vars
+        run: export SECRET_KEY=secret DEBUG=on
+
       - name: ⚡ Run tests
         run: poetry run pytest
 

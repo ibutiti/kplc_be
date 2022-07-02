@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/kplc_be.iml" filepath="$PROJECT_DIR$/.idea/kplc_be.iml" />
+      <module fileurl="file://$USER_HOME$/code/soapbx/soapbox-backend/.idea/soapbox-backend.iml" filepath="$USER_HOME$/code/soapbx/soapbox-backend/.idea/soapbox-backend.iml" />
     </modules>
   </component>
 </project>
