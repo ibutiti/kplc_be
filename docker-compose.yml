@@ -13,6 +13,7 @@ services:
       - DB_PORT=5432
     volumes:
       - .:/app
+      - ./static/:/app/static/
     depends_on:
       - db
     #      - redis

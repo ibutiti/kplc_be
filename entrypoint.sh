@@ -95,7 +95,7 @@ case "$1" in
     wait_for_db
     python manage.py collectstatic --noinput
     python manage.py migrate
-    watchmedo auto-restart --directory=./ --patterns="*.py;.env" --recursive -- python manage.py runserver 0.0.0.0:8000 --noreload
+    python manage.py runserver 0.0.0.0:8000
   ;;
   gunicorn)
     wait_for_db

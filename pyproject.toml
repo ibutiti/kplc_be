@@ -10,9 +10,13 @@ Django = "^4.0.5"
 djangorestframework = "^3.13.1"
 django-filter = "^22.1"
 django-cors-headers = "^3.13.0"
-dj-rest-auth = {extras = ["with_social"], version = "^2.2.4"}
+dj-rest-auth = { extras = ["with_social"], version = "^2.2.4" }
 django-environ = "^0.9.0"
 psycopg2 = "^2.9.3"
+gunicorn = "^20.1.0"
+whitenoise = "^6.2.0"
+drf-yasg = "^1.20.0"
+djangorestframework-simplejwt = "^5.2.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

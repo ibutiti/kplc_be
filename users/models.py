@@ -1,6 +1,8 @@
+from uuid import uuid4
+
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
-# Create your models here.
 class User(AbstractUser):
-    pass
+    id = models.UUIDField(primary_key=True, default=uuid4)

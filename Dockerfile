@@ -6,7 +6,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
 
-
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-venv \
@@ -36,9 +35,9 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8080
 
-RUN ["chmod", "+x", "/code/entrypoint.sh"]
+RUN ["chmod", "+x", "/app/entrypoint.sh"]
 
-ENTRYPOINT ["/code/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 CMD ["help"]
 
