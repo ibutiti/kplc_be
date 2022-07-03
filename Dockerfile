@@ -2,12 +2,20 @@ ARG PYTHON_VERSION=3.10.4
 
 FROM python:${PYTHON_VERSION}-slim
 
+ENV PYTHONDONTWRITEBYTECODE 1
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED 1
+
+
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-venv \
     python3-dev \
     python3-setuptools \
-    python3-wheel
+    python3-wheel \
+    netcat \
+    curl \
+    libpq-dev
 
 RUN python -m pip install --upgrade pip
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
