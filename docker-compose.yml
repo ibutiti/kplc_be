@@ -1,0 +1,154 @@
+version: '3.8'
+
+services:
+  django:
+    build:
+      context: .
+    command: runserver
+    image: kplc_be_django
+    environment:
+      - DJANGO_SETTINGS_MODULE=kplc_outages.settings
+      - PYTHONUNBUFFERED=1
+      - DB_HOST=db
+      - DB_PORT=5432
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    #      - redis
+    #      - anansi
+    #      - celery_normal_worker
+    #      - celery_rated_worker
+    #      - flower
+    ports:
+      - 8000:8000
+    logging:
+      options:
+        max-size: "50m"
+
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=kplc_outages
+    ports:
+      - 5432:5432
+    logging:
+      options:
+        max-size: "50m"
+
+#  redis:
+#    image: redis:5
+#    ports:
+#      - 6379:6379
+#    hostname: redis
+#    volumes:
+#      - redis_data:/data
+#    logging:
+#      options:
+#        max-size: "50m"
+#
+#  rabbitmq:
+#    image: rabbitmq:3.8.6
+#    environment:
+#      RABBITMQ_DEFAULT_USER: "rabbitmq"
+#      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+#      RABBITMQ_DEFAULT_VHOST: "/"
+#    ports:
+#      - "15672:15672"
+#      - "5672:5672"
+#    logging:
+#      options:
+#        max-size: "50m"
+#
+#  celery_beat:
+#    image: soapbox-backend_django
+#    command: "celery -A backend beat --loglevel=INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+#    environment:
+#      - DJANGO_SETTINGS_MODULE=backend.settings
+#      - PYTHONUNBUFFERED=1
+#      - IS_LOCAL=True
+#    volumes:
+#      - .:/code
+#    depends_on:
+#      - rabbitmq
+#      - redis
+#      - db
+#    logging:
+#      options:
+#        max-size: "50m"
+#
+#  celery_normal_worker:
+#    image: soapbox-backend_django
+#    command: "celery -A backend worker --loglevel=INFO -n normal@%h --concurrency 4 -E"
+#    environment:
+#      - DJANGO_SETTINGS_MODULE=backend.settings
+#      - PYTHONUNBUFFERED=1
+#      - IS_LOCAL=True
+#    volumes:
+#      - .:/code
+#    depends_on:
+#      - rabbitmq
+#      - redis
+#      - db
+#    logging:
+#      options:
+#        max-size: "50m"
+#
+#  celery_rated_worker:
+#    image: soapbox-backend_django
+#    command: "celery -A backend worker --loglevel=INFO -n rated@%h -Q rated_queue --concurrency 4 -E"
+#    environment:
+#      - DJANGO_SETTINGS_MODULE=backend.settings
+#      - PYTHONUNBUFFERED=1
+#      - IS_LOCAL=True
+#    volumes:
+#      - .:/code
+#    depends_on:
+#      - rabbitmq
+#      - redis
+#      - db
+#    logging:
+#      options:
+#        max-size: "50m"
+#
+#  celery_storefront_worker:
+#    image: soapbox-backend_django
+#    command: "celery -A backend worker --loglevel=INFO -n rated@%h -Q storefront_queue --concurrency 4 -E"
+#    environment:
+#      - DJANGO_SETTINGS_MODULE=backend.settings
+#      - PYTHONUNBUFFERED=1
+#      - IS_LOCAL=True
+#    volumes:
+#      - .:/code
+#    depends_on:
+#      - rabbitmq
+#      - redis
+#      - db
+#    logging:
+#      options:
+#        max-size: "50m"
+#
+#  flower:
+#    image: soapbox-backend_django
+#    command: flower
+#    volumes:
+#      - .:/code
+#    ports:
+#      - 5555:5555
+#    depends_on:
+#      - celery_normal_worker
+#      - celery_rated_worker
+#      - rabbitmq
+#      - redis
+#    logging:
+#      options:
+#        max-size: "50m"
+
+volumes:
+  postgres_data:
+#  redis_data:
+#  libpostal_data:
