@@ -13,11 +13,38 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import logging
+
+import requests
 from django.contrib import admin
 from django.urls import path, include, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
+from outages.models import County
+
+logger = logging.getLogger(__name__)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def healthcheck(request):
+    try:
+        counties = County.objects.count()
+        assert counties == 47
+        url = reverse('schema-swagger-ui', request=request)
+        response = requests.head(url)
+        response.raise_for_status()
+        return Response('Healthcheck OK ✅', status=200)
+    except:
+        logger.exception('Healthcheck Failed ❌')
+
+        return Response('ERROR', status=500)
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -37,4 +64,5 @@ urlpatterns = [
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path("admin/", admin.site.urls),
     path("auth/", include("users.urls")),
+    path("healthcheck/", healthcheck)
 ]

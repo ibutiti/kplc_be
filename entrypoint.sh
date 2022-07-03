@@ -98,12 +98,13 @@ case "$1" in
     python manage.py runserver 0.0.0.0:8000
   ;;
   gunicorn)
-    wait_for_db
-    gunicorn backend.wsgi:application \
+    python manage.py collectstatic --noinput
+    python manage.py migrate
+    gunicorn kplc_outages.wsgi:application \
       --workers 4 \
       --bind 0.0.0.0:8080 \
       --log-level debug \
-      --timeout $TIMEOUT
+      --timeout 60
   ;;
   celery)
     shift 1
