@@ -11,6 +11,13 @@ class County(BaseModel):
         unique=True
     )
 
+    class Meta:
+        verbose_name_plural = 'Counties'
+        ordering = ('name',)
+
+    def __str__(self):
+        return f'{self.id} - {self.name}'
+
 
 class Area(BaseModel):
     name = models.CharField(
@@ -28,6 +35,10 @@ class Area(BaseModel):
 
     class Meta:
         unique_together = ('name', 'county')
+        ordering = ('name',)
+
+    def __str__(self):
+        return f'{self.id}: {self.name} - {self.county.name} County'
 
 
 class Neighbourhood(BaseModel):
@@ -54,6 +65,10 @@ class Neighbourhood(BaseModel):
 
     class Meta:
         unique_together = ('name', 'county', 'area')
+        ordering = ('name',)
+
+    def __str__(self):
+        return f'{self.id}: {self.name} - {self.area.name}, {self.county.name} County'
 
 
 class Outage(BaseModel):
@@ -81,3 +96,6 @@ class Outage(BaseModel):
         blank=False,
         null=False,
     )
+
+    class Meta:
+        ordering = ('start_time',)
