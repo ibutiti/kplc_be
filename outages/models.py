@@ -61,7 +61,8 @@ class Outage(BaseModel):
     end_time = models.DateTimeField(null=False, blank=False)
     is_partial = models.BooleanField(default=False)
     county = models.ForeignKey(
-        County, on_delete=models.PROTECT,
+        County,
+        on_delete=models.PROTECT,
         related_name='outages',
         null=False,
         blank=False
