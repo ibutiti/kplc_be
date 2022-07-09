@@ -15,9 +15,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 # False if not in os.environ because of casting above
 DEBUG = env("DEBUG")
 
-SECRET_KEY = env("SECRET_KEY", default='replace_me')
+SECRET_KEY = env("SECRET_KEY", default="replace_me")
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -38,15 +38,16 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "allauth.socialaccount.providers.twitter",
     # 'allauth.socialaccount.providers.facebook',
-    'drf_yasg',
+    "anymail",
+    "drf_yasg",
     # code
     "users",
-    'outages',
+    "outages",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -64,22 +65,22 @@ SITE_ID = 1
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_PAGINATION_CLASS": "common.pagination.PageNumberWithSizePagination",
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
 }
 ## ========== auth stuff =========
 
 # dj_rest_auth
 REST_USE_JWT = True
-JWT_AUTH_COOKIE = 'auth-token'
-JWT_AUTH_REFRESH_COOKIE = 'refresh-token'
+JWT_AUTH_COOKIE = "auth-token"
+JWT_AUTH_REFRESH_COOKIE = "refresh-token"
 JWT_AUTH_SECURE = DEBUG is False
 OLD_PASSWORD_FIELD_ENABLED = True
 
 # django allauth
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 TEMPLATES = [
     {
@@ -103,9 +104,7 @@ WSGI_APPLICATION = "kplc_outages.wsgi.application"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db(
-        default='postgres://postgres:postgres@db:5432/kplc_outages'
-    )
+    "default": env.db(default="postgres://postgres:postgres@db:5432/kplc_outages")
 }
 
 # Password validation
@@ -126,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -142,8 +141,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
