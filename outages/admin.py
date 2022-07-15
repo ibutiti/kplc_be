@@ -24,22 +24,22 @@ class NeighbourhoodInline(admin.TabularInline):
 @admin.register(County)
 class CountyAdmin(admin.ModelAdmin):
     inlines = [AreaInline, OutageInline]
-    ordering = ('name',)
+    ordering = ("name",)
 
 
 @admin.register(Area)
 class AreaAdmin(admin.ModelAdmin):
-    list_display = ['name', 'county']
+    list_display = ["name", "county"]
     inlines = [NeighbourhoodInline, OutageInline]
 
 
 @admin.register(Neighbourhood)
 class NeighbourhoodAdmin(admin.ModelAdmin):
-    list_display = ['name', 'area']
+    list_display = ["name", "area"]
     inlines = [OutageInline]
 
 
 @admin.register(Outage)
 class OutageAdmin(admin.ModelAdmin):
-    list_display = ['start_time', 'end_time', 'neighbourhood']
-    date_hierarchy = 'start_time'
+    list_display = ["start_time", "end_time", "neighbourhood"]
+    date_hierarchy = "start_time"

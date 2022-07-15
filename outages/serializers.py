@@ -7,74 +7,59 @@ class OutageSlimSerializer(serializers.ModelSerializer):
     class Meta:
         model = Outage
         fields = (
-            'id',
-            'start_time',
-            'end_time',
+            "id",
+            "start_time",
+            "end_time",
         )
 
 
 class CountySerializer(serializers.ModelSerializer):
     class Meta:
         model = County
-        fields = (
-            'id',
-            'name',
-            'outages'
-        )
+        fields = ("id", "name", "outages")
 
 
 class CountySlimSerializer(serializers.ModelSerializer):
     class Meta:
         model = County
         fields = (
-            'id',
-            'name',
+            "id",
+            "name",
         )
 
 
 class AreaSerializer(serializers.ModelSerializer):
-    county = serializers.SlugRelatedField('name', read_only=True)
+    county = serializers.SlugRelatedField("name", read_only=True)
 
     class Meta:
         model = Area
-        fields = (
-            'id',
-            'name',
-            'county',
-            'outages'
-        )
+        fields = ("id", "name", "county", "outages")
 
 
 class AreaSlimSerializer(serializers.ModelSerializer):
     class Meta:
         model = Area
         fields = (
-            'id',
-            'name',
+            "id",
+            "name",
         )
 
 
 class NeighbourhoodSerializer(serializers.ModelSerializer):
-    county = serializers.SlugRelatedField('name', read_only=True)
+    county = serializers.SlugRelatedField("name", read_only=True)
     area = AreaSerializer()
 
     class Meta:
         model = Neighbourhood
-        fields = (
-            'id',
-            'name',
-            'area',
-            'county',
-            'outages'
-        )
+        fields = ("id", "name", "area", "county", "outages")
 
 
 class NeighbourhoodSlimSerializer(serializers.ModelSerializer):
     class Meta:
         model = Neighbourhood
         fields = (
-            'id',
-            'name',
+            "id",
+            "name",
         )
 
 
@@ -86,13 +71,13 @@ class OutageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Outage
         fields = (
-            'id',
-            'area',
-            'county',
-            'neighbourhood',
-            'start_time',
-            'end_time',
-            'is_partial'
+            "id",
+            "area",
+            "county",
+            "neighbourhood",
+            "start_time",
+            "end_time",
+            "is_partial",
         )
 
 
@@ -103,4 +88,4 @@ class OutageUploadSerializer(serializers.Serializer):
         pass
 
     def update(self, instance, validated_data):
-        raise serializers.ValidationError('Upload edit not allowed')
+        raise serializers.ValidationError("Upload edit not allowed")

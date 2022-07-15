@@ -7,7 +7,7 @@ from common.constants import COUNTIES
 
 
 def seed_counties(apps, schema_editor):
-    County = apps.get_model('outages', 'County')
+    County = apps.get_model("outages", "County")
     counties = [County(name=county) for county in COUNTIES]
     County.objects.bulk_create(counties)
 
@@ -15,80 +15,168 @@ def seed_counties(apps, schema_editor):
 class Migration(migrations.Migration):
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Area',
+            name="Area",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('updated_at', models.DateTimeField(auto_now=True, db_index=True, null=True)),
-                ('is_active', models.BooleanField(db_index=True, default=True)),
-                ('name', models.CharField(max_length=64)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, db_index=True, null=True),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, db_index=True, null=True),
+                ),
+                ("is_active", models.BooleanField(db_index=True, default=True)),
+                ("name", models.CharField(max_length=64)),
             ],
         ),
         migrations.CreateModel(
-            name='County',
+            name="County",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('updated_at', models.DateTimeField(auto_now=True, db_index=True, null=True)),
-                ('is_active', models.BooleanField(db_index=True, default=True)),
-                ('name', models.CharField(max_length=64, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, db_index=True, null=True),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, db_index=True, null=True),
+                ),
+                ("is_active", models.BooleanField(db_index=True, default=True)),
+                ("name", models.CharField(max_length=64, unique=True)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Neighbourhood',
+            name="Neighbourhood",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('updated_at', models.DateTimeField(auto_now=True, db_index=True, null=True)),
-                ('is_active', models.BooleanField(db_index=True, default=True)),
-                ('name', models.CharField(max_length=64, unique=True)),
-                ('area', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='neighbourhoods',
-                                           to='outages.area')),
-                ('county', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='neighbourhoods',
-                                             to='outages.county')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, db_index=True, null=True),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, db_index=True, null=True),
+                ),
+                ("is_active", models.BooleanField(db_index=True, default=True)),
+                ("name", models.CharField(max_length=64, unique=True)),
+                (
+                    "area",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="neighbourhoods",
+                        to="outages.area",
+                    ),
+                ),
+                (
+                    "county",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="neighbourhoods",
+                        to="outages.county",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('name', 'county', 'area')},
+                "unique_together": {("name", "county", "area")},
             },
         ),
         migrations.CreateModel(
-            name='Outage',
+            name="Outage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('updated_at', models.DateTimeField(auto_now=True, db_index=True, null=True)),
-                ('is_active', models.BooleanField(db_index=True, default=True)),
-                ('start_time', models.DateTimeField()),
-                ('end_time', models.DateTimeField()),
-                ('is_partial', models.BooleanField(default=False)),
-                ('area', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='outages',
-                                           to='outages.area')),
-                ('county', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='outages',
-                                             to='outages.county')),
-                ('neighbourhood', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='outages',
-                                                    to='outages.neighbourhood')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, db_index=True, null=True),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, db_index=True, null=True),
+                ),
+                ("is_active", models.BooleanField(db_index=True, default=True)),
+                ("start_time", models.DateTimeField()),
+                ("end_time", models.DateTimeField()),
+                ("is_partial", models.BooleanField(default=False)),
+                (
+                    "area",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="outages",
+                        to="outages.area",
+                    ),
+                ),
+                (
+                    "county",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="outages",
+                        to="outages.county",
+                    ),
+                ),
+                (
+                    "neighbourhood",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="outages",
+                        to="outages.neighbourhood",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.AddField(
-            model_name='area',
-            name='county',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='areas',
-                                    to='outages.county'),
+            model_name="area",
+            name="county",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="areas",
+                to="outages.county",
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='area',
-            unique_together={('name', 'county')},
+            name="area",
+            unique_together={("name", "county")},
         ),
-        migrations.RunPython(seed_counties)
+        migrations.RunPython(seed_counties),
     ]
