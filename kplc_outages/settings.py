@@ -154,7 +154,6 @@ if DEBUG:
 else:
     EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 
-EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@kplc.edge.ke'
 
 ANYMAIL = {
