@@ -107,10 +107,10 @@ class OutageUploadView(APIView):
                         neighbourhoods[
                             f"{county.name}-{row.area}-{row.neighbourhood}"
                         ] = neighbourhood
-                except:
+                except Exception as e:
                     raise ValidationError(
                         {
-                            "neighbourhood": f"Error on neighbourhood {row.neighbourhood} on row {idx}"
+                            "neighbourhood": f"Error {e} on neighbourhood {row.neighbourhood} on row {idx}"
                         }
                     )
 

@@ -29,7 +29,7 @@ class Area(BaseModel):
 
 
 class Neighbourhood(BaseModel):
-    name = models.CharField(max_length=64, null=False, blank=False, unique=True)
+    name = models.CharField(max_length=64, null=False, blank=False)
     county = models.ForeignKey(
         County,
         on_delete=models.PROTECT,

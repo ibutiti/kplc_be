@@ -1,6 +1,10 @@
 import os
 
+import django
 import environ
+from django.utils.encoding import force_str
+
+django.utils.encoding.force_text = force_str
 
 env = environ.Env(
     # set casting, default value
@@ -17,6 +21,8 @@ DEBUG = env("DEBUG")
 
 SECRET_KEY = env("SECRET_KEY", default="replace_me")
 
+WEB_APP_BASE_URL = env('WEB_APP_BASE_URL', default='http://localhost:3000')
+
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
@@ -28,6 +34,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # installed deps
     "django.contrib.sites",
+    "graphene_django",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -69,6 +76,10 @@ REST_FRAMEWORK = {
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
 }
+
+GRAPHENE = {
+    "SCHEMA": "kplc_outages.schema.schema"
+}
 ## ========== auth stuff =========
 
 # dj_rest_auth
@@ -81,6 +92,17 @@ OLD_PASSWORD_FIELD_ENABLED = True
 # django allauth
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'offline',
+        }
+    }
+}
 
 TEMPLATES = [
     {
@@ -125,7 +147,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# ============ email stuff ==============
+
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+
+EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@kplc.edge.ke'
+
+ANYMAIL = {
+    'MAILGUN_API_KEY': env('MAILGUN_API_KEY', default='replace_me'),
+    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
