@@ -21,7 +21,7 @@ DEBUG = env("DEBUG")
 
 SECRET_KEY = env("SECRET_KEY", default="replace_me")
 
-WEB_APP_BASE_URL = env('WEB_APP_BASE_URL', default='http://localhost:3000')
+WEB_APP_BASE_URL = env("WEB_APP_BASE_URL", default="http://localhost:3000")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -77,9 +77,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-GRAPHENE = {
-    "SCHEMA": "kplc_outages.schema.schema"
-}
+GRAPHENE = {"SCHEMA": "kplc_outages.schema.schema"}
 ## ========== auth stuff =========
 
 # dj_rest_auth
@@ -93,14 +91,14 @@ OLD_PASSWORD_FIELD_ENABLED = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
         ],
-        'AUTH_PARAMS': {
-            'access_type': 'offline',
-        }
+        "AUTH_PARAMS": {
+            "access_type": "offline",
+        },
     }
 }
 
@@ -152,12 +150,12 @@ AUTH_PASSWORD_VALIDATORS = [
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+    EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
-DEFAULT_FROM_EMAIL = 'noreply@kplc.edge.ke'
+DEFAULT_FROM_EMAIL = "noreply@kplc.edge.ke"
 
 ANYMAIL = {
-    'MAILGUN_API_KEY': env('MAILGUN_API_KEY', default='replace_me'),
+    "MAILGUN_API_KEY": env("MAILGUN_API_KEY", default="replace_me"),
     "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
 }
 

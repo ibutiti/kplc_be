@@ -10,16 +10,10 @@ class CountyNode(DjangoObjectType):
     class Meta:
         model = County
         interfaces = (relay.Node,)
-        fields = (
-            "id",
-            "name",
-            "areas",
-            "neighbourhoods",
-            'outages'
-        )
+        fields = ("id", "name", "areas", "neighbourhoods", "outages")
         filter_fields = {
-            'name': ('exact', 'icontains'),
-            'outages__start_time': ('gte',)
+            "name": ("exact", "icontains"),
+            "outages__start_time": ("gte",),
         }
 
 
@@ -27,16 +21,10 @@ class AreaNode(DjangoObjectType):
     class Meta:
         model = Area
         interfaces = (relay.Node,)
-        fields = (
-            "id",
-            "name",
-            "county",
-            "neighbourhoods",
-            'outages'
-        )
+        fields = ("id", "name", "county", "neighbourhoods", "outages")
         filter_fields = {
-            'name': ('icontains', 'exact'),
-            'county__name': ('icontains', 'exact'),
+            "name": ("icontains", "exact"),
+            "county__name": ("icontains", "exact"),
         }
 
 
@@ -44,17 +32,11 @@ class NeighbourhoodNode(DjangoObjectType):
     class Meta:
         model = Neighbourhood
         interfaces = (relay.Node,)
-        fields = (
-            "id",
-            "name",
-            "county",
-            "area",
-            'outages'
-        )
+        fields = ("id", "name", "county", "area", "outages")
         filter_fields = {
-            'name': ('icontains', 'exact'),
-            'county__name': ('icontains', 'exact'),
-            'area__name': ('icontains', 'exact'),
+            "name": ("icontains", "exact"),
+            "county__name": ("icontains", "exact"),
+            "area__name": ("icontains", "exact"),
         }
 
 
@@ -69,14 +51,14 @@ class OutageNode(DjangoObjectType):
             "is_partial",
             "county",
             "area",
-            'neighbourhood'
+            "neighbourhood",
         )
         filter_fields = {
-            'start_time': ('gte', 'lte'),
-            'end_time': ('gte', 'lte'),
-            'county__name': ('icontains', 'exact'),
-            'area__name': ('icontains', 'exact'),
-            'neighbourhood__name': ('icontains', 'exact'),
+            "start_time": ("gte", "lte"),
+            "end_time": ("gte", "lte"),
+            "county__name": ("icontains", "exact"),
+            "area__name": ("icontains", "exact"),
+            "neighbourhood__name": ("icontains", "exact"),
         }
 
 

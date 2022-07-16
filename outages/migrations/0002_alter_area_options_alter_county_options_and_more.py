@@ -6,29 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('outages', '0001_initial'),
+        ("outages", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='area',
-            options={'ordering': ('name',)},
+            name="area",
+            options={"ordering": ("name",)},
         ),
         migrations.AlterModelOptions(
-            name='county',
-            options={'ordering': ('name',), 'verbose_name_plural': 'Counties'},
+            name="county",
+            options={"ordering": ("name",), "verbose_name_plural": "Counties"},
         ),
         migrations.AlterModelOptions(
-            name='neighbourhood',
-            options={'ordering': ('name',)},
+            name="neighbourhood",
+            options={"ordering": ("name",)},
         ),
         migrations.AlterModelOptions(
-            name='outage',
-            options={'ordering': ('start_time',)},
+            name="outage",
+            options={"ordering": ("start_time",)},
         ),
         migrations.AlterField(
-            model_name='neighbourhood',
-            name='name',
+            model_name="neighbourhood",
+            name="name",
             field=models.CharField(max_length=64),
         ),
     ]

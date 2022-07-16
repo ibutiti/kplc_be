@@ -24,7 +24,7 @@ class TwitterLogin(SocialLoginView):
 
 class VerifyEmailView(APIView, ConfirmEmailView):
     permission_classes = (permissions.AllowAny,)
-    allowed_methods = ('GET', 'OPTIONS', 'HEAD')
+    allowed_methods = ("GET", "OPTIONS", "HEAD")
 
     def get_serializer(self, *args, **kwargs):
         return VerifyEmailSerializer(*args, **kwargs)
@@ -32,22 +32,27 @@ class VerifyEmailView(APIView, ConfirmEmailView):
     def get(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=kwargs)
         serializer.is_valid(raise_exception=True)
-        self.kwargs['key'] = serializer.validated_data['key']
+        self.kwargs["key"] = serializer.validated_data["key"]
         confirmation = self.get_object()
         confirmation.confirm(self.request)
 
-        return redirect(to=f'{settings.WEB_APP_BASE_URL}/email-confirmed/')
+        return redirect(to=f"{settings.WEB_APP_BASE_URL}/email-confirmed/")
 
 
 class PasswordResetRedirectView(APIView):
     permission_classes = (permissions.AllowAny,)
-    allowed_methods = ('GET', 'OPTIONS', 'HEAD',)
+    allowed_methods = (
+        "GET",
+        "OPTIONS",
+        "HEAD",
+    )
 
     def get(self, request, *args, **kwargs):
-        user_id = kwargs.get('user_id')
-        token = kwargs.get('token')
+        user_id = kwargs.get("user_id")
+        token = kwargs.get("token")
         if not user_id and token:
-            return Http404('Invalid password reset. Request new password reset email.')
+            return Http404("Invalid password reset. Request new password reset email.")
 
         return redirect(
-            to=f'{settings.WEB_APP_BASE_URL}/password-reset/?user={user_id}&&token={token}')
+            to=f"{settings.WEB_APP_BASE_URL}/password-reset/?user={user_id}&&token={token}"
+        )
