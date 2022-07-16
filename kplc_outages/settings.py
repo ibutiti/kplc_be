@@ -1,8 +1,11 @@
 import os
+import sys
 
 import django
 import environ
+import sentry_sdk
 from django.utils.encoding import force_str
+from sentry_sdk.integrations.django import DjangoIntegration
 
 django.utils.encoding.force_text = force_str
 
@@ -24,13 +27,11 @@ SECRET_KEY = env("SECRET_KEY", default="replace_me")
 WEB_APP_BASE_URL = env("WEB_APP_BASE_URL", default="http://localhost:3000")
 
 ALLOWED_HOSTS = [
-    WEB_APP_BASE_URL,
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
     'kplc-outages-be.fly.dev',
-    'kplc-outages-be.fly.dev',
-    '*.edge.ke',
+    '.edge.ke',
     'kplc-outages-staging.fly.dev',
     'kplc-outages.fly.dev',
 ]
@@ -180,6 +181,56 @@ ANYMAIL = {
     "MAILGUN_API_KEY": env("MAILGUN_API_KEY", default="replace_me"),
     "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
 }
+
+# logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': u"[{%(pathname)s:%(lineno)d} - %(levelname)-0s] (%(filename)s:%(lineno)d %(funcName)s) %(message)s",
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'stream': sys.stdout,
+        }
+    },
+    'loggers': {
+        # root logger
+        'backend': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        }
+    }
+}
+
+# Sentry stuff
+if not DEBUG:
+    sentry_sdk.init(
+        dsn=env("SENTRY_DSN", default='replace_me'),
+        integrations=[
+            DjangoIntegration(),
+        ],
+
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

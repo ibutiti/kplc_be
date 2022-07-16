@@ -8,7 +8,7 @@ from rest_framework.reverse import reverse
 
 from outages.models import County
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 
 
 @api_view(["GET"])
