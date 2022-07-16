@@ -21,6 +21,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # False if not in os.environ because of casting above
 DEBUG = env("DEBUG")
+IS_PROD = env('IS_PROD', default=False)
 
 SECRET_KEY = env("SECRET_KEY", default="replace_me")
 
@@ -107,7 +108,7 @@ GRAPHENE = {"SCHEMA": "kplc_outages.schema.schema"}
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = "auth-token"
 JWT_AUTH_REFRESH_COOKIE = "refresh-token"
-JWT_AUTH_SECURE = DEBUG is False
+JWT_AUTH_SECURE = IS_PROD
 OLD_PASSWORD_FIELD_ENABLED = True
 
 # django allauth
@@ -170,10 +171,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # ============ email stuff ==============
 
-if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-else:
+if IS_PROD:
     EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 DEFAULT_FROM_EMAIL = "noreply@kplc.edge.ke"
 
@@ -215,7 +216,7 @@ LOGGING = {
 }
 
 # Sentry stuff
-if not DEBUG:
+if IS_PROD:
     sentry_sdk.init(
         dsn=env("SENTRY_DSN", default='replace_me'),
         integrations=[
