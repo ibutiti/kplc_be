@@ -24,6 +24,7 @@ SECRET_KEY = env("SECRET_KEY", default="replace_me")
 WEB_APP_BASE_URL = env("WEB_APP_BASE_URL", default="http://localhost:3000")
 
 ALLOWED_HOSTS = [
+    WEB_APP_BASE_URL,
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     'https://kplc-outages-be.fly.dev',
@@ -31,17 +32,20 @@ ALLOWED_HOSTS = [
     'https://*.edge.ke',
     'https://kplc-outages-staging.fly.dev',
     'https://kplc-outages.fly.dev',
-    "http://0.0.0.0:8080"
+    "http://0.0.0.0:8080",
 ]
 CSRF_TRUSTED_ORIGINS = [
+    WEB_APP_BASE_URL,
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     "http://0.0.0.0:8080",
     'https://kplc-outages-be.fly.dev',
+    'http://kplc-outages-be.fly.dev',
     'https://*.edge.ke',
     'https://kplc-outages-staging.fly.dev',
     'https://kplc-outages.fly.dev'
 ]
+USE_X_FORWARDED_HOST = True
 
 INSTALLED_APPS = [
     "django.contrib.admin",
