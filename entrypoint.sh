@@ -154,6 +154,9 @@ case "$1" in
       pylint rest_api backend | tee ${project_dir}/test_results/pylint.txt
       exit "${PIPESTATUS[0]}"
   ;;
+  black)
+      black .
+  ;;
   *)
       show_help
   ;;

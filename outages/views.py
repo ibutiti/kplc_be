@@ -13,8 +13,13 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from outages.filters import AreaFilter, NeighbourhoodFilter, OutageFilter, CountyFilter
 from outages.models import County, Area, Neighbourhood, Outage
-from outages.serializers import CountySerializer, AreaSerializer, NeighbourhoodSerializer, OutageSerializer, \
-    OutageUploadSerializer
+from outages.serializers import (
+    CountySerializer,
+    AreaSerializer,
+    NeighbourhoodSerializer,
+    OutageSerializer,
+    OutageUploadSerializer,
+)
 
 
 class CountyReadOnlyViewset(ReadOnlyModelViewSet):
@@ -23,7 +28,7 @@ class CountyReadOnlyViewset(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     pagination_class = None
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    search_fields = ('id', 'name')
+    search_fields = ("id", "name")
     filterset_class = CountyFilter
 
 
@@ -32,7 +37,7 @@ class AreaReadOnlyViewset(ReadOnlyModelViewSet):
     serializer_class = AreaSerializer
     permission_classes = [AllowAny]
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    search_fields = ('id', 'name')
+    search_fields = ("id", "name")
     filterset_class = AreaFilter
 
 
@@ -41,7 +46,7 @@ class NeighbourhoodReadOnlyViewset(ReadOnlyModelViewSet):
     serializer_class = NeighbourhoodSerializer
     permission_classes = [AllowAny]
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    search_fields = ('id', 'name')
+    search_fields = ("id", "name")
     filterset_class = NeighbourhoodFilter
 
 
@@ -50,7 +55,7 @@ class OutageViewset(ReadOnlyModelViewSet):
     serializer_class = OutageSerializer
     permission_classes = [AllowAny]
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    search_fields = ('id', 'name')
+    search_fields = ("id", "name")
     filterset_class = OutageFilter
 
 
@@ -60,7 +65,7 @@ class OutageUploadView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = OutageUploadSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        file = serializer.validated_data['file']
+        file = serializer.validated_data["file"]
         reader = pd.read_csv(file)
 
         outages = []
@@ -75,38 +80,54 @@ class OutageUploadView(APIView):
                         county = County.objects.get(name=row.county)
                         counties[county.name] = county
                 except:
-                    raise ValidationError({'county': f'invalid county {row.county} on row {idx}'})
+                    raise ValidationError(
+                        {"county": f"invalid county {row.county} on row {idx}"}
+                    )
 
                 try:
-                    area = areas.get(f'{county.name}-{row.area}')
+                    area = areas.get(f"{county.name}-{row.area}")
                     if not area:
-                        area, _ = Area.objects.get_or_create(name=row.area, county=county)
-                        areas[f'{county.name}-{row.area}'] = area
+                        area, _ = Area.objects.get_or_create(
+                            name=row.area, county=county
+                        )
+                        areas[f"{county.name}-{row.area}"] = area
                 except:
-                    raise ValidationError({'area': f'Error on area {row.area} on row {idx}'})
+                    raise ValidationError(
+                        {"area": f"Error on area {row.area} on row {idx}"}
+                    )
 
                 try:
-                    neighbourhood = neighbourhoods.get(f'{county.name}-{row.area}-{row.neighbourhood}', None)
+                    neighbourhood = neighbourhoods.get(
+                        f"{county.name}-{row.area}-{row.neighbourhood}", None
+                    )
                     if not neighbourhood:
                         neighbourhood, _ = Neighbourhood.objects.get_or_create(
-                            name=row.neighbourhood,
-                            county=county,
-                            area=area
+                            name=row.neighbourhood, county=county, area=area
                         )
-                        neighbourhoods[f'{county.name}-{row.area}-{row.neighbourhood}'] = neighbourhood
-                except:
-                    raise ValidationError({'neighbourhood': f'Error on neighbourhood {row.neighbourhood} on row {idx}'})
+                        neighbourhoods[
+                            f"{county.name}-{row.area}-{row.neighbourhood}"
+                        ] = neighbourhood
+                except Exception as e:
+                    raise ValidationError(
+                        {
+                            "neighbourhood": f"Error {e} on neighbourhood {row.neighbourhood} on row {idx}"
+                        }
+                    )
 
-                datetime_format = '%d-%m-%Y %H:%M %z'
-                start_time = datetime.strptime(f'{row.date} {row.start} +0300', datetime_format)
-                end_time = datetime.strptime(f'{row.date} {row.end} +0300', datetime_format)
+                datetime_format = "%d-%m-%Y %H:%M %z"
+                start_time = datetime.strptime(
+                    f"{row.date} {row.start} +0300", datetime_format
+                )
+                end_time = datetime.strptime(
+                    f"{row.date} {row.end} +0300", datetime_format
+                )
                 outage = Outage(
                     county=county,
                     area=area,
                     neighbourhood=neighbourhood,
                     start_time=start_time,
                     end_time=end_time,
-                    is_partial=row.isPartial
+                    is_partial=row.isPartial,
                 )
                 outages.append(outage)
 
