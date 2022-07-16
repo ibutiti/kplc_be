@@ -27,15 +27,7 @@ SECRET_KEY = env("SECRET_KEY", default="replace_me")
 
 WEB_APP_BASE_URL = env("WEB_APP_BASE_URL", default="http://localhost:3000")
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "0.0.0.0",
-    'kplc-outages-be.fly.dev',
-    '.edge.ke',
-    'kplc-outages-staging.fly.dev',
-    'kplc-outages.fly.dev',
-]
+ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     WEB_APP_BASE_URL,
     "http://localhost",
