@@ -18,15 +18,17 @@ internal_port = 8080
 processes = ["app"]
 protocol = "tcp"
 script_checks = []
+
 [[services.http_checks]]
 interval = "10s"
 grace_period = "5s"
 method = "get"
 path = "/healthcheck/"
-protocol = "https"
+protocol = "http"
 timeout = "2s"
 tls_skip_verify = false
 headers = { }
+
 [services.concurrency]
 hard_limit = 25
 soft_limit = 20

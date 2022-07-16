@@ -27,6 +27,7 @@ ALLOWED_HOSTS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     'https://kplc-outages-be.fly.dev',
+    'http://kplc-outages-be.fly.dev',
     'https://*.edge.ke',
     'https://kplc-outages-staging.fly.dev',
     'https://kplc-outages.fly.dev',
