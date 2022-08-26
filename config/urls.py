@@ -22,7 +22,7 @@ from drf_yasg.views import get_schema_view
 from graphene_django.views import GraphQLView
 from rest_framework import permissions
 
-from kplc_outages.healthcheck import healthcheck
+from config.healthcheck import healthcheck
 
 schema_view = get_schema_view(
     openapi.Info(

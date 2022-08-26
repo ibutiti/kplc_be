@@ -81,7 +81,7 @@ MIDDLEWARE = [
 ]
 
 AUTH_USER_MODEL = "users.User"
-ROOT_URLCONF = "kplc_outages.urls"
+ROOT_URLCONF = "config.urls"
 CORS_ORIGIN_ALLOW_ALL = True
 SITE_ID = 1
 
@@ -93,7 +93,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-GRAPHENE = {"SCHEMA": "kplc_outages.schema.schema"}
+GRAPHENE = {"SCHEMA": "config.schema.schema"}
 ## ========== auth stuff =========
 
 # dj_rest_auth
@@ -134,7 +134,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "kplc_outages.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

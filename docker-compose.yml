@@ -7,7 +7,7 @@ services:
     command: runserver
     image: kplc_be_django
     environment:
-      - DJANGO_SETTINGS_MODULE=kplc_outages.settings
+      - DJANGO_SETTINGS_MODULE=config.settings
       - PYTHONUNBUFFERED=1
       - DB_HOST=db
       - DB_PORT=5432

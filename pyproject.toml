@@ -6,7 +6,7 @@ authors = ["Allan Ibutiti <25291950+ibutiti@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-Django = "^4.0.5"
+Django = "^4.1"
 djangorestframework = "^3.13.1"
 django-filter = "^22.1"
 django-cors-headers = "^3.13.0"
@@ -18,9 +18,10 @@ whitenoise = "^6.2.0"
 drf-yasg = "^1.20.0"
 djangorestframework-simplejwt = "^5.2.0"
 pandas = "^1.4.3"
+Brotli = "^1.0.9"
 django-anymail = "^8.6"
 graphene-django = "^2.15.0"
-sentry-sdk = "^1.7.2"
+sentry-sdk = "^1.9.5"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

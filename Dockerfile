@@ -1,45 +1,49 @@
-ARG PYTHON_VERSION=3.10.4
+ARG PYTHON_VERSION=3.10.6-slim
 
-FROM python:${PYTHON_VERSION}-slim
+FROM python:${PYTHON_VERSION} as build
 
 ENV PYTHONDONTWRITEBYTECODE 1
-# Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    python3-venv \
-    python3-dev \
-    python3-setuptools \
-    python3-wheel \
-    netcat \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
     curl \
     libpq-dev
 
 RUN python -m pip install --upgrade pip
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-ENV PATH="${PATH}:/root/.poetry/bin"
-RUN poetry --version
-RUN poetry config virtualenvs.create false
 
-RUN mkdir -p /app
+ENV POETRY_VERSION 1.1.15
+RUN curl -sSL https://install.python-poetry.org | python -
+ENV PATH="/root/.local/bin:$PATH"
+
 WORKDIR /app
+COPY pyproject.toml poetry.lock ./
+RUN python -m venv --copies /opt/venv
 
-COPY pyproject.toml .
-COPY poetry.lock .
-RUN poetry install $(test "$ENV" == production && echo "--no-dev") --no-interaction
+RUN . /opt/venv/bin/activate && poetry install --no-dev
 
-COPY . .
 
-RUN python manage.py collectstatic --noinput
+FROM python:${PYTHON_VERSION} as prod
 
-EXPOSE 8080
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update &&  \
+    apt-get install -y --no-install-recommends libpq-dev &&  \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=build /opt/venv /opt/venv/
+ENV PATH="/opt/venv/bin:$PATH"
+
+WORKDIR /app
+COPY . ./
+
+EXPOSE 8000
 
 RUN ["chmod", "+x", "/app/entrypoint.sh"]
 
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-CMD ["help"]
-
-# replace APP_NAME with module name
-#CMD ["gunicorn", "--bind", ":8080", "--workers", "2", "kplc_outages.wsgi"]
+CMD ["gunicorn"]

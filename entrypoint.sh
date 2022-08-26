@@ -32,15 +32,6 @@ show_help() {
 project_dir=/code
 mkdir -p ${project_dir}/test_results
 
-wait_for_db () {
-  while ! nc -z "${DB_HOST}" "${DB_PORT}";
-  do
-    echo "Waiting for DB to be ready"
-    sleep 2;
-  done
-}
-
-
 wait_for_celery () {
   until celery -A backend inspect ping; do
       >&2 echo "Celery workers not available"
@@ -67,32 +58,25 @@ case "$1" in
     python manage.py create_db
   ;;
   migrator_task)
-    wait_for_db
     python manage.py collectstatic --noinput
     python manage.py migrate
   ;;
   makemigrations)
-    wait_for_db
     python manage.py makemigrations
   ;;
   makemigrations_merge)
-    wait_for_db
     python manage.py makemigrations --merge
   ;;
   migrate)
-    wait_for_db
     python manage.py migrate
   ;;
   migration_check)
-    wait_for_db
     ddtrace-run python manage.py migration_check
   ;;
   dummy_data)
-    wait_for_db
     python manage.py jummy_data "$2"
   ;;
   runserver)
-    wait_for_db
     python manage.py collectstatic --noinput
     python manage.py migrate
     python manage.py runserver 0.0.0.0:8000
@@ -100,7 +84,7 @@ case "$1" in
   gunicorn)
     python manage.py collectstatic --noinput
     python manage.py migrate
-    gunicorn kplc_outages.wsgi:application \
+    gunicorn config.wsgi:application \
       --workers 4 \
       --bind 0.0.0.0:8080 \
       --log-level debug \
@@ -133,18 +117,15 @@ case "$1" in
   ;;
   test)
       echo "Starting entrypoint.sh:test"
-      wait_for_db
       echo "Running Applications Tests: $2"
       IS_TESTING=true pytest "$2" --full-trace
   ;;
   test-keep-db)
       echo "Starting entrypoint.sh:test"
-      wait_for_db
       echo "Running Applications Tests: $2"
       IS_TESTING=true pytest "$2" --full-trace --reuse-db
   ;;
   coverage)
-      wait_for_db
       coverage erase
       coverage run --source='.' manage.py test
       coverage report
